@@ -31,34 +31,53 @@
         </div>
     </div>      
     <script>
-        document.getElementById('canjeForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var nombreUsuario = document.getElementById('nombreUsuario').value;
-            var discord = document.getElementById('discord').value;
-            var codigo = document.getElementById('codigo').value;
-            var codigosValidos = ["JUST-TEST"];
-            if (codigosValidos.includes(codigo)) {
-                fetch('https://discord.com/api/webhooks/1100222330615111742/2eKi9_W2MM2CQDKGUHGN76tVA2O3lDYlNryLC4ZqCruTPIlcs_6vhye_tJRsax_aQuzu', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var nombreUsuario = document.querySelector('#nombreUsuario').value;
+    var discord = document.querySelector('#discord').value;
+    var codigo = document.querySelector('#codigo').value;
+    var webhookUrl = 'https://discord.com/api/webhooks/1100222330615111742/2eKi9_W2MM2CQDKGUHGN76tVA2O3lDYlNryLC4ZqCruTPIlcs_6vhye_tJRsax_aQuzu'; // Aquí debes colocar tu enlace de webhook
+    var mensaje = {
+        "content": "¡Código canjeado exitosamente!",
+        "embeds": [
+            {
+                "title": "Código Canjeado",
+                "color": 16776960,
+                "fields": [
+                    {
+                        "name": "Nombre de Usuario",
+                        "value": nombreUsuario,
+                        "inline": true
                     },
-                    body: JSON.stringify({
-                        nombreUsuario: nombreUsuario,
-                        discord: discord,
-                        codigo: codigo
-                    })
-                })
-                .then(function(response) {
-                    document.getElementById('resultado').textContent = '¡Código canjeado exitosamente! (Pero no recibiras nada)';
-                })
-                .catch(function(error) {
-                    console.error('Error al enviar los datos a Discord:', error);
-                });
-            } else {
-                document.getElementById('resultado').textContent = 'Código no válido';
+                    {
+                        "name": "Discord",
+                        "value": discord,
+                        "inline": true
+                    },
+                    {
+                        "name": "Código",
+                        "value": codigo,
+                        "inline": true
+                    }
+                ]
             }
-        });
-    </script>
+        ]
+    };
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(mensaje)
+    }).then(function(response) {
+        console.log('Mensaje enviado con éxito:', response);
+        document.querySelector('#resultado').textContent = '¡Código canjeado exitosamente!';
+    }).catch(function(error) {
+        console.error('Error al enviar el mensaje:', error);
+        document.querySelector('#resultado').textContent = 'Error al canjear el código. Por favor, intenta nuevamente.';
+    });
+});
+</script>
+
 </body>
 </html>
