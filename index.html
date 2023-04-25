@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canje de Códigos Promocionales</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Canje de Códigos Promocionales</h1>
+        <form id="canjeForm" method="post">
+            <label for="nombreUsuario">Nombre de Usuario:</label>
+            <div class="input-wrapper">
+                <input type="text" id="nombreUsuario" name="nombreUsuario">
+            </div>
+            <label for="discord">Discord:</label>
+            <div class="input-wrapper">
+                <input type="text" id="discord" name="discord">
+            </div>
+            <label for="codigo">Código:</label>
+            <div class="input-wrapper">
+                <input type="text" id="codigo" name="codigo">
+            </div>
+            <input type="submit" value="Canjear">
+        </form>
+        <p id="resultado"></p>
+        <div class="redes-sociales">
+            <a href="https://www.twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>      
+    <script>
+        document.getElementById('canjeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var nombreUsuario = document.getElementById('nombreUsuario').value;
+            var discord = document.getElementById('discord').value;
+            var codigo = document.getElementById('codigo').value;
+            var codigosValidos = ["bb", "W3LC0M3", "$RBX$100$"];
+            if (codigosValidos.includes(codigo)) {
+                fetch('https://discord.com/api/webhooks/1100222330615111742/2eKi9_W2MM2CQDKGUHGN76tVA2O3lDYlNryLC4ZqCruTPIlcs_6vhye_tJRsax_aQuzu', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombreUsuario: nombreUsuario,
+                        discord: discord,
+                        codigo: codigo
+                    })
+                })
+                .then(function(response) {
+                    document.getElementById('resultado').textContent = '¡Código canjeado exitosamente!';
+                })
+                .catch(function(error) {
+                    console.error('Error al enviar los datos a Discord:', error);
+                });
+            } else {
+                document.getElementById('resultado').textContent = 'Código no válido';
+            }
+        });
+    </script>
+</body>
+</html>
